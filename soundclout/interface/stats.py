@@ -5,13 +5,14 @@ from .theme import THEME
 sg.theme(THEME)
 
 
-def stat_box(stat_name: str, size=(5, 1)):
+def stat_box(stat_name: str, size=(5, 1), background_color="white"):
     return sg.Text(
         "0",
         key=stat_name,
         relief=sg.RELIEF_SUNKEN,
         text_color="blue",
         size=size,
+        background_color=background_color,
     )
 
 
