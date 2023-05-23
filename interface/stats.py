@@ -18,43 +18,51 @@ def stat_box(stat_name: str, size=(5, 1)):
 stats_title = [
     [
         [
-            sg.Text("Workbench Starts: "),
+            sg.Text("Driver 1 plays: "),
         ],
         [
-            sg.Text("Workbench Collects"),
+            sg.Text("Driver 2 plays: "),
         ],
         [
-            sg.Text("Bitcoin Collects"),
+            sg.Text("Driver 3 plays: "),
         ],
         [
-            sg.Text("Lavatory Starts"),
+            sg.Text("Driver 4 plays: "),
         ],
         [
-            sg.Text("Lavatory Collects"),
+            sg.Text("Driver 5 plays: "),
         ],
         [
-            sg.Text("Est Profit"),
+            sg.Text("Driver 6 plays: "),
+        ],
+        [
+            sg.Text("Driver 7 plays: "),
+        ],
+        [
+            sg.Text("Driver 8 plays: "),
         ],
     ],
     [
         [
-            sg.Text("Medstation Starts"),
+            sg.Text("Driver 9 plays"),
         ],
         [
-            sg.Text("Medstation Collects"),
+            sg.Text("Driver 10 plays"),
         ],
         [
-            sg.Text("Water Filters"),
+            sg.Text("Driver 11 plays"),
         ],
         [
-            sg.Text("Water Collects"),
+            sg.Text("Driver 12 plays"),
         ],
         [
-            sg.Text("Restarts"),
+            sg.Text("Driver 13 plays"),
         ],
-        
         [
-            sg.Text("Est Time Per Station"),
+            sg.Text("Driver 14 plays"),
+        ],
+        [
+            sg.Text("Driver 15 plays"),
         ],
     ],
 ]
@@ -63,43 +71,51 @@ stats_title = [
 stats_values = [
     [
         [
-            stat_box("workbench_starts"),
+            stat_box("driver_1_plays"),
         ],
         [
-            stat_box("workbench_collects"),
+            stat_box("driver_2_plays"),
         ],
         [
-            stat_box("bitcoin_collects"),
+            stat_box("driver_3_plays"),
         ],
         [
-            stat_box("lavatory_starts"),
+            stat_box("driver_4_plays"),
         ],
         [
-            stat_box("lavatory_collects"),
+            stat_box("driver_5_plays"),
         ],
         [
-            stat_box("profit",size=(10,1)),
+            stat_box("driver_6_plays"),
+        ],
+        [
+            stat_box("driver_7_plays"),
+        ],
+        [
+            stat_box("driver_8_plays"),
         ],
     ],
     [
         [
-            stat_box("medstation_starts"),
+            stat_box("driver_9_plays"),
         ],
         [
-            stat_box("medstation_collects"),
+            stat_box("driver_10_plays"),
         ],
         [
-            stat_box("water_filters"),
+            stat_box("driver_11_plays"),
         ],
         [
-            stat_box("water_collects"),
+            stat_box("driver_12_plays"),
         ],
         [
-            stat_box("restarts"),
+            stat_box("driver_13_plays"),
         ],
-        
         [
-            stat_box("station_time"),
+            stat_box("driver_14_plays"),
+        ],
+        [
+            stat_box("driver_15_plays"),
         ],
     ],
 ]
