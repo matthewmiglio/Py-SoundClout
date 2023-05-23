@@ -25,7 +25,7 @@ def save_current_settings(values):
     # read the currently selected values for each key in user_config_keys
     user_settings = {key: values[key] for key in user_config_keys if key in values}
 
-    print('user_settings',user_settings)
+    print("user_settings", user_settings)
     # cache the user settings
     cache_user_settings(user_settings)
 
@@ -177,6 +177,9 @@ def gui_main():
 
         elif event == "Help":
             show_help_gui()
+
+        elif event == "issues-link":
+            webbrowser.open("https://github.com/matthewmiglio/Py-SoundClout/issues")
 
         elif event == "Donate":
             webbrowser.open(
