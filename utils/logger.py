@@ -12,6 +12,7 @@ class Logger:
 
         self.queue: Queue[dict[str, str | int]] = Queue() if queue is None else queue
 
+        # plays stats
         self.driver_1_plays = 0
         self.driver_2_plays = 0
         self.driver_3_plays = 0
@@ -28,6 +29,7 @@ class Logger:
         self.driver_14_plays = 0
         self.driver_15_plays = 0
 
+        # driver state stats
         self.driver_1_state = "idle"
         self.driver_2_state = "idle"
         self.driver_3_state = "idle"
@@ -44,7 +46,11 @@ class Logger:
         self.driver_14_state = "idle"
         self.driver_15_state = "idle"
 
+        # time stats
         self.start_time = time.time()
+        self.time_since_start = 0
+
+        self.errored = False
 
     def _update_queue(self):
         """updates the queue with a dictionary of mutable statistics"""
@@ -52,8 +58,37 @@ class Logger:
             return
 
         statistics: dict[str, str | int] = {
-            # "time_since_start": self.calc_time_since_start(),
-            # "current_state": self.current_state,
+            "time_since_start": self.calc_time_since_start(),
+            "driver_1_plays ": self.driver_1_plays,
+            "driver_2_plays ": self.driver_2_plays,
+            "driver_3_plays ": self.driver_3_plays,
+            "driver_4_plays ": self.driver_4_plays,
+            "driver_5_plays ": self.driver_5_plays,
+            "driver_6_plays ": self.driver_6_plays,
+            "driver_7_plays ": self.driver_7_plays,
+            "driver_8_plays ": self.driver_8_plays,
+            "driver_9_plays ": self.driver_9_plays,
+            "driver_10_plays": self.driver_10_plays,
+            "driver_11_plays": self.driver_11_plays,
+            "driver_12_plays": self.driver_12_plays,
+            "driver_13_plays": self.driver_13_plays,
+            "driver_14_plays": self.driver_14_plays,
+            "driver_15_plays": self.driver_15_plays,
+            "driver_1_state ": self.driver_1_state,
+            "driver_2_state ": self.driver_2_state,
+            "driver_3_state ": self.driver_3_state,
+            "driver_4_state ": self.driver_4_state,
+            "driver_5_state ": self.driver_5_state,
+            "driver_6_state ": self.driver_6_state,
+            "driver_7_state ": self.driver_7_state,
+            "driver_8_state ": self.driver_8_state,
+            "driver_9_state ": self.driver_9_state,
+            "driver_10_state": self.driver_10_state,
+            "driver_11_state": self.driver_11_state,
+            "driver_12_state": self.driver_12_state,
+            "driver_13_state": self.driver_13_state,
+            "driver_14_state": self.driver_14_state,
+            "driver_15_state": self.driver_15_state,
         }
         self.queue.put(statistics)
 
@@ -85,21 +120,10 @@ class Logger:
             state (str): state of the program during the message
         """
 
-
-        d1_string = f"Driver 1: |{self.driver_1_plays} plays |{self.driver_1_state}|\n"
-        d2_string = f"Driver 2: |{self.driver_2_plays} plays |{self.driver_2_state}|\n"
-        d3_string = f"Driver 3: |{self.driver_3_plays} plays |{self.driver_3_state}|\n"
-        d4_string = f"Driver 4: |{self.driver_4_plays} plays |{self.driver_4_state}|\n"
-        d5_string = f"Driver 5: |{self.driver_5_plays} plays |{self.driver_5_state}|\n"
-
-        info_string = d1_string + d2_string + d3_string + d4_string + d5_string
-
-
-
         time_string = f"[{self.make_timestamp()}]\n"
         # info_string = f"[{self.driver_1_plays}][{self.driver_2_plays}][{self.driver_3_plays}][{self.driver_4_plays}][{self.driver_5_plays}]"
 
-        print('________________\n\n'+time_string + info_string + message)
+        print(time_string + message)
 
     @_updates_queue
     def update_driver_state(self, driver_index, new_state):

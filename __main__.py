@@ -16,7 +16,7 @@ from utils.logger import Logger
 logger = Logger()
 
 
-def main(driver, thread_index):
+def spam_one_play(driver, thread_index):
     logger.log("in main")
 
     logger.update_driver_state(driver_index=thread_index, new_state="Starting")
@@ -67,6 +67,7 @@ def main(driver, thread_index):
     else:
         logger.update_driver_state(driver_index=thread_index, new_state="Failed")
 
+
 def main():
     count = 4
     chrome_options = make_chrome_options()
@@ -75,7 +76,7 @@ def main():
         with ThreadPoolExecutor(max_workers=count) as executor:
             durations = list(
                 executor.map(
-                    main,
+                    spam_one_play,
                     [webdriver.Chrome(options=chrome_options) for _ in range(count)],
                     range(count),
                 )
