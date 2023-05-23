@@ -92,7 +92,7 @@ def get_driver_colors(logger):
     for status in drivers:
         if status == "Failed":
             driver_color_list.append("Red")
-        elif status == "Running" or status == "Starting":
+        elif status == "Running" or status == "Starting" or status == 'Listening' or status == 'Starting' or status == 'Success':
             driver_color_list.append("Green")
         else:
             driver_color_list.append("Grey")

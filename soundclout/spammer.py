@@ -75,6 +75,14 @@ class Spammer:
                 driver_index=thread_index, new_state="Failed"
             )
 
+        driver.close()
+        self.logger.update_driver_state(
+                driver_index=thread_index, new_state="Closed"
+            )
+        self.logger.log(f"Driver #{thread_index}: Closed driver")
+
+
+
     def spam_main(self, thread_count, username):
         print(f"Thread count in spam_main: {thread_count}")
         print(f"username in spam_main: {username}")
