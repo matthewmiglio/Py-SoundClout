@@ -41,3 +41,4 @@ def get_directory_of_files_to_delete():
 def clean_selenium_files():
     files_to_delete = get_directory_of_files_to_delete()
     delete_files(files_to_delete)
+    print('Cleaned selenium files')

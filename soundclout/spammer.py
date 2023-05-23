@@ -9,7 +9,6 @@ from soundclout.client_interaction import (
     get_to_webpage,
     scroll_to_bottom,
 )
-from soundclout.credentials import get_link_from_file
 from soundclout.utils.chrome_driver import make_chrome_options
 from soundclout.utils.logger import Logger
 
