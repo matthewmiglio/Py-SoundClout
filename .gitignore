@@ -1,9 +1,10 @@
+debug.py
+log.txt
+
 temp/
 .vscode/
 output/
-build/
-wheelhouse/
-pytarkbot/cache/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
