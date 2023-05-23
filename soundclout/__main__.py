@@ -106,7 +106,7 @@ class WorkerThread(StoppableThread):
             jobs = self.args
 
             # CODE TO RUN HERE
-            pass
+            main()
 
         except ThreadKilled:
             return
