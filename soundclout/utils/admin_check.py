@@ -2,6 +2,7 @@ import ctypes
 import PySimpleGUI as sg
 import os
 
+
 # method to check if the user is an admin
 def isAdmin():
     try:
@@ -19,7 +20,7 @@ def show_admin_mode_gui():
     layout = [
         [sg.Text(out_text)],
     ]
-    window = sg.Window("Py-TarkBot", layout)
+    window = sg.Window("Py-SoundClout", layout)
     while True:
         read = window.read()
         event, _ = read or (None, None)

@@ -68,6 +68,9 @@ stats_title = [
         [
             sg.Text("Total Plays"),
         ],
+        [
+            sg.Text("Time per play"),
+        ],
     ],
 ]
 
@@ -123,6 +126,9 @@ stats_values = [
         ],
         [
             stat_box("total_plays"),
+        ],
+        [
+            stat_box("time_per_play"),
         ],
     ],
 ]

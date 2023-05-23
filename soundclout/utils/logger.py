@@ -14,6 +14,7 @@ class Logger:
 
         # program stats
         self.program_status = "Idle"
+        self.plays_per_second = 0
 
         # plays stats
         self.driver_1_plays = 0
@@ -64,7 +65,6 @@ class Logger:
         statistics: dict[str, str | int] = {
             "time_since_start": self.calc_time_since_start(),
             "program_status": self.program_status,
-
             "driver_1_plays": self.driver_1_plays,
             "driver_2_plays": self.driver_2_plays,
             "driver_3_plays": self.driver_3_plays,
@@ -81,7 +81,7 @@ class Logger:
             "driver_14_plays": self.driver_14_plays,
             "driver_15_plays": self.driver_15_plays,
             "total_plays": self.total_plays,
-
+            'time_per_play':self.calc_time_per_play()
             # "driver_1_state": self.driver_1_state,
             # "driver_2_state": self.driver_2_state,
             # "driver_3_state": self.driver_3_state,
@@ -132,11 +132,10 @@ class Logger:
         # info_string = f"[{self.driver_1_plays}][{self.driver_2_plays}][{self.driver_3_plays}][{self.driver_4_plays}][{self.driver_5_plays}]"
 
         print(time_string + message)
-    
+
     @_updates_queue
     def update_program_status(self, status):
         self.program_status = status
-
 
     @_updates_queue
     def update_driver_state(self, driver_index, new_state):
@@ -205,6 +204,15 @@ class Logger:
             self.driver_14_plays += 1
         elif driver_number == 14:
             self.driver_15_plays += 1
+
+    def calc_time_per_play(self) -> str:
+        if self.total_plays == 0:
+            return '0s'
+
+        time_taken =time.time() - self.start_time
+        time_per_play = time_taken / self.total_plays
+
+        return str(time_per_play)[:3]+'s'
 
     def calc_time_since_start(self) -> str:
         if self.start_time is not None:

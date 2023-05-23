@@ -8,8 +8,13 @@ def make_chrome_options():
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--no-sandbox")
-    # chrome_options.add_argument("--headless")  # make client run in background
-    chrome_options.add_argument("log-level=3")  # dont print useless selenium stuff
+    chrome_options.add_argument("--disable-software-rasterizer")  # Disable software rasterizer
+    chrome_options.add_argument("--force-device-scale-factor=1")  # Set device scale factor to 1
+    chrome_options.add_argument("--disable-background-timer-throttling")  # Disable background timer throttling
+    chrome_options.add_argument("--disable-backgrounding-occluded-windows")  # Disable backgrounding of occluded windows
+    chrome_options.add_argument("--disable-renderer-backgrounding")  # Disable renderer backgrounding
+    # chrome_options.add_argument("--headless")  # make client run in the background
+    chrome_options.add_argument("log-level=3")  # don't print useless Selenium stuff
     chrome_options.add_argument("--mute-audio")
     return chrome_options
 

@@ -18,15 +18,14 @@ class Spammer:
     def __init__(self, logger: Logger):
         self.logger: Logger = logger
 
-    def spam_one_play(self, driver, thread_index):
+    def spam_one_play(self, driver, thread_index, username):
         self.logger.log("in main")
 
         self.logger.update_driver_state(driver_index=thread_index, new_state="Starting")
 
         success = False
 
-        # make driver objects
-        link = get_link_from_file()
+        link = "https://soundcloud.com/" + username
 
         self.logger.log(f"Driver #{thread_index}: getting to webpages")
         get_to_webpage(driver, link)
@@ -67,7 +66,7 @@ class Spammer:
             self.logger.update_driver_state(
                 driver_index=thread_index, new_state="Listening"
             )
-            time.sleep(random.randint(35,45))
+            time.sleep(random.randint(35, 45))
             self.logger.update_driver_state(
                 driver_index=thread_index, new_state="Success"
             )
@@ -77,9 +76,13 @@ class Spammer:
                 driver_index=thread_index, new_state="Failed"
             )
 
-    def spam_main(self, thread_count):
+    def spam_main(self, thread_count, username):
+        print(f"Thread count in spam_main: {thread_count}")
+        print(f"username in spam_main: {username}")
+
         chrome_options = make_chrome_options()
         # use pools to load the pages, and get the durations
+
         while 1:
             with ThreadPoolExecutor(max_workers=thread_count) as executor:
                 executor.map(
@@ -89,4 +92,5 @@ class Spammer:
                         for _ in range(thread_count)
                     ],
                     range(thread_count),
+                    [username for _ in range(thread_count)],
                 )

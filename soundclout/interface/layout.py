@@ -9,7 +9,7 @@ instructions_text = """No instructions yet
 
 # defining various things that r gonna be in the gui.
 main_layout = [
-    #info box
+    # info box
     [
         sg.Frame(
             layout=[[sg.Text(info_text, size=(35, None))]],
@@ -35,6 +35,21 @@ main_layout = [
                 [
                     sg.DropDown(
                         list(range(1, 16)), key="driver_count", default_value="1"
+                    )
+                ],
+            ],
+            title="Job List",
+            relief=sg.RELIEF_SUNKEN,
+            expand_x=True,
+        )
+    ],
+    [
+        sg.Frame(
+            layout=[
+                [sg.Text("Your Soundcloud Username:")],
+                [
+                    sg.Input(
+                        key="username_input",
                     )
                 ],
             ],
@@ -107,6 +122,7 @@ user_config_keys = [
     # "remove_offers_timer",
     "autostart",
     "driver_count",
+    'username_input',
 ]
 
 # list of button and checkbox keys to disable when the bot is running

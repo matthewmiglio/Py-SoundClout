@@ -2,8 +2,6 @@ import os
 import PySimpleGUI as sg
 
 
-
-
 # method to get appdata directory
 def get_appdata_dir():
     return os.environ["APPDATA"]
@@ -52,13 +50,13 @@ def get_link_from_file():
 
 def show_missing_creds_gui(directory):
     THEME = "SystemDefaultForReal"
-    out_text = (f"You must put your soundcloud profile link in the file at {directory}")
+    out_text = f"You must put your soundcloud profile link in the file at {directory}"
 
     sg.theme(THEME)
     layout = [
         [sg.Text(out_text)],
     ]
-    window = sg.Window("Py-TarkBot", layout)
+    window = sg.Window("Py-SoundClout", layout)
     while True:
         read = window.read()
         event, _ = read or (None, None)

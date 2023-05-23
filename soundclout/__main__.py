@@ -5,11 +5,18 @@ from queue import Queue
 import PySimpleGUI as sg
 
 import soundclout.utils.admin_check
-from soundclout.interface import (disable_keys, main_layout, show_help_gui,
-                                  user_config_keys)
+from soundclout.interface import (
+    disable_keys,
+    main_layout,
+    show_help_gui,
+    user_config_keys,
+)
 from soundclout.spammer import Spammer
-from soundclout.utils.caching import (cache_user_settings, check_user_settings,
-                                      read_user_settings)
+from soundclout.utils.caching import (
+    cache_user_settings,
+    check_user_settings,
+    read_user_settings,
+)
 from soundclout.utils.logger import Logger
 from soundclout.utils.thread import StoppableThread, ThreadKilled
 
@@ -17,6 +24,8 @@ from soundclout.utils.thread import StoppableThread, ThreadKilled
 def save_current_settings(values):
     # read the currently selected values for each key in user_config_keys
     user_settings = {key: values[key] for key in user_config_keys if key in values}
+
+    print('user_settings',user_settings)
     # cache the user settings
     cache_user_settings(user_settings)
 
@@ -49,7 +58,7 @@ def update_layout(window: sg.Window, logger: Logger):
         for stat, val in logger.queue.get().items():
             # print the elements in window to debug
             # print(window.AllKeysDict)
-            
+
             window[stat].update(val)  # type: ignore
 
 
@@ -67,10 +76,12 @@ def start_button_event(logger: Logger, spammer, window, values):
 
     # unpack job list
     count = values["driver_count"]
+
+    username = values["username_input"]
     # if values["bitcoin_checkbox"]:
     #     jobs.append("Bitcoin")
 
-    thread = WorkerThread(logger, spammer, count)
+    thread = WorkerThread(logger, spammer, [count, username])
     thread.start()
 
     # enable the stop button after the thread is started
@@ -94,14 +105,16 @@ class WorkerThread(StoppableThread):
     def run(self):
         try:
             self.logger.update_program_status("Running")
-            
-            print(self.args)
+
+            print("args: ", self.args)
 
             # unpack args for main
-            count = self.args
-            print(count)
+            count = self.args[0]
+            username = self.args[1]
+            print("count", count)
+            print("username", username)
             # CODE TO RUN HERE
-            self.spammer.spam_main(count)
+            self.spammer.spam_main(count, username)
 
         except ThreadKilled:
             return
@@ -119,7 +132,7 @@ def gui_main():
     logger = Logger(comm_queue, timed=False)  # dont time the inital logger
 
     # window layout
-    window = sg.Window("Py-TarkBot", main_layout)
+    window = sg.Window("Py-SoundClout", main_layout)
 
     load_last_settings(window)
 
