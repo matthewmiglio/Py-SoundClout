@@ -1,30 +1,17 @@
-from selenium import webdriver
-from concurrent.futures import ThreadPoolExecutor
-import random
-import credentials
-from client_interaction import (
-    find_play_button_elements,
-    get_to_webpage,
-    scroll_to_bottom,
-)
-from utils.chrome_driver import make_chrome_driver, make_chrome_options
-import time
-import utils.admin_check
-from utils.logger import Logger
-
 import time
 import webbrowser
 from queue import Queue
 
 import PySimpleGUI as sg
-from utils.caching import read_user_settings
-from utils.caching import check_user_settings
-from utils.caching import cache_user_settings
-from interface import user_config_keys, disable_keys, main_layout, show_help_gui
-from utils.thread import StoppableThread, ThreadKilled
-from utils.logger import Logger
 
-logger = Logger()
+import soundclout.utils.admin_check
+from soundclout.interface import (disable_keys, main_layout, show_help_gui,
+                                  user_config_keys)
+from soundclout.spammer import Spammer
+from soundclout.utils.caching import (cache_user_settings, check_user_settings,
+                                      read_user_settings)
+from soundclout.utils.logger import Logger
+from soundclout.utils.thread import StoppableThread, ThreadKilled
 
 
 def save_current_settings(values):
@@ -60,6 +47,9 @@ def update_layout(window: sg.Window, logger: Logger):
     if not logger.queue.empty():
         # read the statistics from the logger
         for stat, val in logger.queue.get().items():
+            # print the elements in window to debug
+            print(window.AllKeysDict)
+            
             window[stat].update(val)  # type: ignore
 
 
@@ -67,7 +57,7 @@ def no_jobs_popup():
     sg.popup("Please enter your message:", "Message Box")
 
 
-def start_button_event(logger: Logger, window, values):
+def start_button_event(logger: Logger, spammer, window, values):
     # check for invalid inputs
 
     logger.log("Starting")
@@ -76,11 +66,11 @@ def start_button_event(logger: Logger, window, values):
         window[key].update(disabled=True)
 
     # unpack job list
-    count = values['driver_count']
+    count = values["driver_count"]
     # if values["bitcoin_checkbox"]:
     #     jobs.append("Bitcoin")
 
-    thread = WorkerThread(logger, count)
+    thread = WorkerThread(logger, spammer, count)
     thread.start()
 
     # enable the stop button after the thread is started
@@ -96,9 +86,10 @@ def stop_button_event(logger: Logger, window, thread):
 
 
 class WorkerThread(StoppableThread):
-    def __init__(self, logger: Logger, args):
+    def __init__(self, logger: Logger, spammer: Spammer, args):
         super().__init__(args)
         self.logger = logger
+        self.spammer = spammer
 
     def run(self):
         try:
@@ -108,7 +99,7 @@ class WorkerThread(StoppableThread):
             count = self.args
             print(count)
             # CODE TO RUN HERE
-            main(count)
+            self.spammer.spam_main(count)
 
         except ThreadKilled:
             return
@@ -116,72 +107,6 @@ class WorkerThread(StoppableThread):
         except Exception as exc:  # pylint: disable=broad-except
             # catch exceptions and log to not crash the main thread
             self.logger.error(str(exc))
-
-
-def spam_one_play(driver, thread_index):
-    logger.log("in main")
-
-    logger.update_driver_state(driver_index=thread_index, new_state="Starting")
-
-    success = False
-
-    # make driver objects
-    link = credentials.get_link_from_file()
-
-    logger.log(f"Driver #{thread_index}: getting to webpages")
-    get_to_webpage(driver, link)
-    time.sleep(5)
-
-    logger.log(f"Driver #{thread_index}: scrolling to bottom")
-    for _ in range(5):
-        scroll_to_bottom(driver)
-        time.sleep(0.5)
-
-    time.sleep(5)
-
-    logger.log(f"Driver #{thread_index}: finding elements on pages")
-    d1_elements = find_play_button_elements(driver)
-
-    while 1:
-        start_time = time.time()
-        try:
-            time_taken = time.time() - start_time
-            if time_taken > 5:
-                logger.log(f"Driver #{thread_index}: Took too long to find element")
-                break
-
-            d1_random_element = random.choice(d1_elements)
-            d1_random_element.click()
-            logger.log(f"Driver #{thread_index}: Clicked play button")
-
-            logger.add_play(thread_index)
-
-            success = True
-            break
-        except:
-            pass
-
-    if success:
-        logger.update_driver_state(driver_index=thread_index, new_state="Listening")
-        time.sleep(34)
-        logger.update_driver_state(driver_index=thread_index, new_state="Success")
-
-    else:
-        logger.update_driver_state(driver_index=thread_index, new_state="Failed")
-
-
-def main(thread_count):
-    chrome_options = make_chrome_options()
-    # use pools to load the pages, and get the durations
-    while 1:
-        with ThreadPoolExecutor(max_workers=thread_count) as executor:
-            durations = list(
-                executor.map(
-                    spam_one_play,
-                    [webdriver.Chrome(options=chrome_options) for _ in range(thread_count)],
-                    range(thread_count),
-                )
-            )
 
 
 def gui_main():
@@ -229,7 +154,8 @@ def gui_main():
             # start the bot with new queue and logger
             comm_queue = Queue()
             logger = Logger(comm_queue)
-            thread = start_button_event(logger, window, values)
+            spammer = Spammer(logger)
+            thread = start_button_event(logger, spammer, window, values)
 
         elif event == "Stop":
             stop_button_event(logger, window, thread)
