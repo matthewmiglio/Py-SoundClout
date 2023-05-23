@@ -48,7 +48,7 @@ def update_layout(window: sg.Window, logger: Logger):
         # read the statistics from the logger
         for stat, val in logger.queue.get().items():
             # print the elements in window to debug
-            print(window.AllKeysDict)
+            # print(window.AllKeysDict)
             
             window[stat].update(val)  # type: ignore
 
@@ -60,7 +60,7 @@ def no_jobs_popup():
 def start_button_event(logger: Logger, spammer, window, values):
     # check for invalid inputs
 
-    logger.log("Starting")
+    logger.update_program_status("Starting")
 
     for key in disable_keys:
         window[key].update(disabled=True)
@@ -80,7 +80,7 @@ def start_button_event(logger: Logger, spammer, window, values):
 
 
 def stop_button_event(logger: Logger, window, thread):
-    logger.log("Stopping")
+    logger.update_program_status("Stopping")
     window["Stop"].update(disabled=True)
     shutdown_thread(thread, kill=True)  # send the shutdown flag to the thread
 
@@ -93,6 +93,8 @@ class WorkerThread(StoppableThread):
 
     def run(self):
         try:
+            self.logger.update_program_status("Running")
+            
             print(self.args)
 
             # unpack args for main

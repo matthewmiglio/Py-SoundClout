@@ -64,6 +64,9 @@ stats_title = [
         [
             sg.Text("Driver 15 plays"),
         ],
+        [
+            sg.Text("Total Plays"),
+        ],
     ],
 ]
 
@@ -116,6 +119,9 @@ stats_values = [
         ],
         [
             stat_box("driver_15_plays"),
+        ],
+        [
+            stat_box("total_plays"),
         ],
     ],
 ]

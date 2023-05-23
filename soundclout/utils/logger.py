@@ -12,6 +12,9 @@ class Logger:
 
         self.queue: Queue[dict[str, str | int]] = Queue() if queue is None else queue
 
+        # program stats
+        self.program_status = "Idle"
+
         # plays stats
         self.driver_1_plays = 0
         self.driver_2_plays = 0
@@ -28,6 +31,7 @@ class Logger:
         self.driver_13_plays = 0
         self.driver_14_plays = 0
         self.driver_15_plays = 0
+        self.total_plays = 0
 
         # driver state stats
         self.driver_1_state = "idle"
@@ -59,6 +63,8 @@ class Logger:
 
         statistics: dict[str, str | int] = {
             "time_since_start": self.calc_time_since_start(),
+            "program_status": self.program_status,
+
             "driver_1_plays": self.driver_1_plays,
             "driver_2_plays": self.driver_2_plays,
             "driver_3_plays": self.driver_3_plays,
@@ -74,6 +80,8 @@ class Logger:
             "driver_13_plays": self.driver_13_plays,
             "driver_14_plays": self.driver_14_plays,
             "driver_15_plays": self.driver_15_plays,
+            "total_plays": self.total_plays,
+
             # "driver_1_state": self.driver_1_state,
             # "driver_2_state": self.driver_2_state,
             # "driver_3_state": self.driver_3_state,
@@ -120,10 +128,15 @@ class Logger:
             state (str): state of the program during the message
         """
 
-        time_string = f"[{self.make_timestamp()}]\n"
+        time_string = f"[{self.make_timestamp()}]"
         # info_string = f"[{self.driver_1_plays}][{self.driver_2_plays}][{self.driver_3_plays}][{self.driver_4_plays}][{self.driver_5_plays}]"
 
         print(time_string + message)
+    
+    @_updates_queue
+    def update_program_status(self, status):
+        self.program_status = status
+
 
     @_updates_queue
     def update_driver_state(self, driver_index, new_state):
@@ -160,6 +173,8 @@ class Logger:
 
     @_updates_queue
     def add_play(self, driver_number):
+        self.total_plays += 1
+
         if driver_number == 0:
             self.driver_1_plays += 1
         elif driver_number == 1:

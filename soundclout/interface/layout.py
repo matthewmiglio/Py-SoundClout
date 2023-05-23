@@ -90,7 +90,7 @@ main_layout = [
         stat_box("time_since_start", size=(7, 1)),
         sg.InputText(
             "Idle",
-            key="message",
+            key="program_status",
             use_readonly_for_disable=True,
             disabled=True,
             text_color="blue",
