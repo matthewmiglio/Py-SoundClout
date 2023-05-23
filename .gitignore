@@ -4,6 +4,7 @@ log.txt
 temp/
 .vscode/
 output/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
