@@ -76,11 +76,11 @@ def start_button_event(logger: Logger, window, values):
         window[key].update(disabled=True)
 
     # unpack job list
-    jobs = []
+    count = values['driver_count']
     # if values["bitcoin_checkbox"]:
     #     jobs.append("Bitcoin")
 
-    thread = WorkerThread(logger, jobs)
+    thread = WorkerThread(logger, count)
     thread.start()
 
     # enable the stop button after the thread is started
@@ -102,11 +102,13 @@ class WorkerThread(StoppableThread):
 
     def run(self):
         try:
-            # unpack args for main
-            jobs = self.args
+            print(self.args)
 
+            # unpack args for main
+            count = self.args
+            print(count)
             # CODE TO RUN HERE
-            main()
+            main(count)
 
         except ThreadKilled:
             return
@@ -168,17 +170,16 @@ def spam_one_play(driver, thread_index):
         logger.update_driver_state(driver_index=thread_index, new_state="Failed")
 
 
-def main():
-    count = 4
+def main(thread_count):
     chrome_options = make_chrome_options()
     # use pools to load the pages, and get the durations
     while 1:
-        with ThreadPoolExecutor(max_workers=count) as executor:
+        with ThreadPoolExecutor(max_workers=thread_count) as executor:
             durations = list(
                 executor.map(
                     spam_one_play,
-                    [webdriver.Chrome(options=chrome_options) for _ in range(count)],
-                    range(count),
+                    [webdriver.Chrome(options=chrome_options) for _ in range(thread_count)],
+                    range(thread_count),
                 )
             )
 
