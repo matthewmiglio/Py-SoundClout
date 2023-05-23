@@ -10,6 +10,7 @@ from soundclout.interface import (
     main_layout,
     show_help_gui,
     user_config_keys,
+    driver_keys,
 )
 from soundclout.spammer import Spammer
 from soundclout.utils.caching import (
@@ -61,26 +62,64 @@ def update_layout(window: sg.Window, logger: Logger):
 
             window[stat].update(val)  # type: ignore
 
+    # change driver colors according to state
+    colors = get_driver_colors(logger)
+    driver_key_count = 15
+    for index in range(driver_key_count):
+        window[driver_keys[index]].update(background_color=colors[index])
 
-def no_jobs_popup():
-    sg.popup("Please enter your message:", "Message Box")
+
+def get_driver_colors(logger):
+    driver_color_list = []
+    drivers = [
+        logger.driver_1_state,
+        logger.driver_2_state,
+        logger.driver_3_state,
+        logger.driver_4_state,
+        logger.driver_5_state,
+        logger.driver_6_state,
+        logger.driver_7_state,
+        logger.driver_8_state,
+        logger.driver_9_state,
+        logger.driver_10_state,
+        logger.driver_11_state,
+        logger.driver_12_state,
+        logger.driver_13_state,
+        logger.driver_14_state,
+        logger.driver_15_state,
+    ]
+
+    for status in drivers:
+        if status == "Failed":
+            driver_color_list.append("Red")
+        elif status == "Running" or status == "Starting":
+            driver_color_list.append("Green")
+        else:
+            driver_color_list.append("Grey")
+
+    return driver_color_list
 
 
 def start_button_event(logger: Logger, spammer, window, values):
-    # check for invalid inputs
+    # insert code for checking if user input vars are good
 
     logger.update_program_status("Starting")
 
+    # disable keys upon program start
     for key in disable_keys:
         window[key].update(disabled=True)
 
-    # unpack job list
+    # # change driver colors according to state
+    # colors = get_driver_colors(logger)
+    # driver_key_count = 15
+    # for index in range(driver_key_count):
+    #     window[driver_keys[index]].update(background_color=colors[index])
+
+    # unpack user input vars
     count = values["driver_count"]
-
     username = values["username_input"]
-    # if values["bitcoin_checkbox"]:
-    #     jobs.append("Bitcoin")
 
+    # start worker thread using user input vars
     thread = WorkerThread(logger, spammer, [count, username])
     thread.start()
 

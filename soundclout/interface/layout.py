@@ -129,3 +129,25 @@ user_config_keys = [
 
 # list of button and checkbox keys to disable when the bot is running
 disable_keys = user_config_keys + ["Start"]
+
+
+driver_keys = [
+    "driver_1_plays",
+"driver_2_plays",
+"driver_3_plays",
+"driver_4_plays",
+"driver_5_plays",
+"driver_6_plays",
+"driver_7_plays",
+"driver_8_plays",
+"driver_9_plays",
+"driver_10_plays",
+"driver_11_plays",
+"driver_12_plays",
+"driver_13_plays",
+"driver_14_plays",
+"driver_15_plays",
+"total_plays",
+"time_per_play",
+]
+
