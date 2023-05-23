@@ -2,9 +2,11 @@ import PySimpleGUI as sg
 
 from .stats import stat_box, stats
 
-info_text = """No into yet"""
+info_text = (
+    """Py-SoundClout is a program for farming your own SoundCloud listen statistics."""
+)
 
-instructions_text = """No instructions yet
+instructions_text = """1. \nEnter your SoundCloud username\n\n2. \nThen select a number of concurrent drivers to use (15 is the fastest, but most resource intensive)
 """
 
 # defining various things that r gonna be in the gui.
@@ -38,7 +40,7 @@ main_layout = [
                     )
                 ],
             ],
-            title="Job List",
+            title="Driver Controls",
             relief=sg.RELIEF_SUNKEN,
             expand_x=True,
         )
@@ -53,7 +55,7 @@ main_layout = [
                     )
                 ],
             ],
-            title="Job List",
+            title="SoundCloud Username",
             relief=sg.RELIEF_SUNKEN,
             expand_x=True,
         )
@@ -122,7 +124,7 @@ user_config_keys = [
     # "remove_offers_timer",
     "autostart",
     "driver_count",
-    'username_input',
+    "username_input",
 ]
 
 # list of button and checkbox keys to disable when the bot is running

@@ -66,7 +66,7 @@ class Spammer:
             self.logger.update_driver_state(
                 driver_index=thread_index, new_state="Listening"
             )
-            time.sleep(random.randint(35, 45))
+            time.sleep(34)
             self.logger.update_driver_state(
                 driver_index=thread_index, new_state="Success"
             )
