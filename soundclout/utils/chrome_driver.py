@@ -26,7 +26,7 @@ def make_chrome_options():
     chrome_options.add_argument(
         "--disable-renderer-backgrounding"
     )  # Disable renderer backgrounding
-    # chrome_options.add_argument("--headless")  # make client run in the background
+    chrome_options.add_argument("--headless")  # make client run in the background
     chrome_options.add_argument("log-level=3")  # don't print useless Selenium stuff
     chrome_options.add_argument("--mute-audio")
     return chrome_options
